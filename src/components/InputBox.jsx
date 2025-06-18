@@ -1,19 +1,25 @@
+import { useState, useEffect } from "react";
 import { useSnapshot } from "valtio";
+import { v4 as uuidv4 } from "uuid";
 import { store } from "../utils";
-import { useState } from "react";
 
-const InputBox = () => {
+const InputBox = ({ initialText, onAfterSubmit }) => {
   const snap = useSnapshot(store);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(initialText);
+
+  useEffect(() => {
+    setText(initialText);
+  }, [initialText]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!text.trim())
       return;
     const title = text.trim();
-    const nextId = snap.list.length + 1;
-    store.list = [...snap.list, { id: nextId, title, status: true }];
+    const id = uuidv4();
+    store.list = [...snap.list, { id, title, status: true }];
     setText("");
+    if (onAfterSubmit) onAfterSubmit();
   };
 
   return (
