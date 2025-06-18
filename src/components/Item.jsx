@@ -1,7 +1,11 @@
-const Item = (item) => {
+const Item = ({title, status, handleToggle, handleDeletion}) => {
     return (
         <>
-            {item.status && <p>{item.title}</p>}
+            <p>{title}</p>
+            <div id="status-btn"><button onClick={handleToggle}>MARK</button></div>
+            <div id="delete-btn"><button onClick={handleDeletion}>DEL</button></div>
+            <br/>
+            <br/>
         </>
     );
 }

@@ -1,17 +1,15 @@
+import { useSnapshot } from "valtio";
 import InputBox from "./InputBox";
 import List from "./List";
+import { store } from "../utils";
 
 const User = () => {
-    const objects = [
-        {id: 1, title: "Love is a Long Road", status: true},
-        {id: 2, title: "Love is a Long Road", status: false},
-        {id: 3, title: "Suspicious Minds", status: true},
-        {id: 4, title: "Love is a Long Road 2", status: true},
-    ]
+    const snap = useSnapshot(store);
+    const list = snap.list;
     return (
         <div>
             <InputBox />
-            <List list={objects}/>
+            <List list={list} />
         </div>
     );
 }

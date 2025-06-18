@@ -1,5 +1,6 @@
 import { proxy } from "valtio";
 
-export const state = proxy({
-    signedIn: false
+export const store = proxy({
+    signedIn: false,
+    list: []
 });
