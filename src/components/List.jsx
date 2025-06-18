@@ -12,18 +12,19 @@ const List = ({ list, onEdit }) => {
   };
   const handleEdit = (id) => {
     const itemToEdit = list.find(item => item.id === id);
-    onEdit(itemToEdit.title);
-    store.list = snap.list.filter(item => item.id !== id);
+    const res = onEdit(itemToEdit.title, itemToEdit.remTime);
+    if (res)
+      store.list = snap.list.filter(item => item.id !== id);
   };
   return (
     <div>
       <h3>PENDING TASKS</h3>
       {
-        list.map(item => item.status && <Item key={item.id} title={item.title} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)
+        list.map(item => item.status && <Item key={item.id} title={item.title} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)
       }
       <h3>COMPLETED TASKS</h3>
       {
-        list.map(item => !item.status && <Item key={item.id} title={item.title} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)
+        list.map(item => !item.status && <Item key={item.id} title={item.title} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)
       }
     </div>
   );
