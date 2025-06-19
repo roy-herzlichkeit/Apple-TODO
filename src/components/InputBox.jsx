@@ -47,7 +47,7 @@ const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgen
     const title = text.trim();
     const id = uuidv4();
     const priority = getPriority(importance, urgency);
-    store.list = [...snap.list, { id, title, status: true, remTime, importance, urgency, priority }];
+    store.list = [...snap.list, { id, title, status: true, remTime, importance, urgency, priority: priority }];
     setText("");
     setRemTime(getLocalDateTime(new Date(Date.now())));
     setImportance(1);

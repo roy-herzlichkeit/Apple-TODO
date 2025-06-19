@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useSnapshot } from "valtio";
 import InputBox from "./InputBox";
-import List from "./List";
+import PendingTasks from "./PendingTasks";
+import CompletedTasks from "./CompletedTasks";
 import { store, getLocalDateTime } from "../utils";
 
 const User = () => {
@@ -42,7 +43,8 @@ const User = () => {
                     setPriority(4);
                 }}
             />
-            <List list={list} onEdit={onEdit} />
+            <CompletedTasks list={list} onEdit={onEdit} />
+            <PendingTasks list={list} onEdit={onEdit} />
         </div>
     );
 }
