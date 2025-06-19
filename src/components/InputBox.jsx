@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { useSnapshot } from "valtio";
 import { v4 as uuidv4 } from "uuid";
-import { store, getLocalDateTime } from "../utils";
+import { store, getLocalDateTime, getPriority } from "../utils";
 
-const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgency, onAfterSubmit }) => {
+const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgency, initialPriority, onAfterSubmit }) => {
   const snap = useSnapshot(store);
   const [text, setText] = useState(initialText);
   const [remTime, setRemTime] = useState(() => getLocalDateTime(new Date(Date.now())));
   const [importance, setImportance] = useState(initialImportance);
   const [urgency, setUrgency] = useState(initialUrgency);
+  const [priority, setPriority] = useState(initialPriority);
 
   useEffect(() => {
     setText(initialText);
@@ -35,13 +36,18 @@ const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgen
     setUrgency(initialUrgency);
   }, [initialUrgency]);
 
+  useEffect(() => {
+    setPriority(initialPriority);
+  }, [initialPriority]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!text.trim())
       return;
     const title = text.trim();
     const id = uuidv4();
-    store.list = [...snap.list, { id, title, status: true, remTime, importance, urgency }];
+    const priority = getPriority(importance, urgency);
+    store.list = [...snap.list, { id, title, status: true, remTime, importance, urgency, priority }];
     setText("");
     setRemTime(getLocalDateTime(new Date(Date.now())));
     setImportance(1);

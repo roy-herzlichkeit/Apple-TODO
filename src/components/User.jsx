@@ -11,8 +11,9 @@ const User = () => {
     const [remTime, setRemTime] = useState(() => getLocalDateTime());
     const [importance, setImportance] = useState(1);
     const [urgency, setUrgency] = useState(1);
+    const [priority, setPriority] = useState(4);
 
-    const onEdit = (taskTitle, taskTime, taskImportance, taskUrgency) => {
+    const onEdit = (taskTitle, taskTime, taskImportance, taskUrgency, taskPriority) => {
         if (title) {
             alert("Please save or cancel the current edit before editing another task.");
             return false;
@@ -20,7 +21,8 @@ const User = () => {
         setTitle(taskTitle);
         setRemTime(taskTime);
         setImportance(taskImportance);
-        setUrgency(taskUrgency)
+        setUrgency(taskUrgency);
+        setPriority(taskPriority);
         return true;
     }
 
@@ -31,11 +33,13 @@ const User = () => {
                 initialRemTime={remTime}
                 initialImportance={importance}
                 initialUrgency={urgency}
+                initialPriority={priority}
                 onAfterSubmit={() => {
                     setTitle("");
                     setRemTime(getLocalDateTime());
                     setImportance(1);
                     setUrgency(1);
+                    setPriority(4);
                 }}
             />
             <List list={list} onEdit={onEdit} />
