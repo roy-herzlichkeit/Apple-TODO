@@ -1,12 +1,16 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { calculateRemaining } from "../utils";
 
-const Task = ({ title, remTime, priority=0, handleToggle, handleDeletion, handleEdit }) => {
+const Task = ({ title, desc, remTime, color, priority=0, handleToggle, handleDeletion, handleEdit }) => {
+  const remaining = useMemo(() => calculateRemaining(remTime), [remTime]);
+
     return (
         <>
             <p>{title}</p>
-            {priority !== 0 && <p>{calculateRemaining(remTime)}</p>}
+            <p>{desc}</p>
+            {priority !== 0 && <p>{remaining}</p>}
             {priority !== 0 && <p>Priority Level: {priority}</p>}
+            <div style={{ display: 'inline-block', width: '10px', height: '10px', backgroundColor: color, marginRight: '8px' }} />
             <div id="status-btn"><button onClick={handleToggle}>MARK</button></div>
             <div id="status-btn"><button onClick={handleEdit}>EDIT</button></div>
             <div id="delete-btn"><button onClick={handleDeletion}>DEL</button></div>

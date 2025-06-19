@@ -13,8 +13,10 @@ const User = () => {
     const [importance, setImportance] = useState(1);
     const [urgency, setUrgency] = useState(1);
     const [priority, setPriority] = useState(4);
+    const [desc, setDesc] = useState("");
+    const [color, setColor] = useState("#ffffff");
 
-    const onEdit = (taskTitle, taskTime, taskImportance, taskUrgency, taskPriority) => {
+    const onEdit = (taskTitle, taskTime, taskImportance, taskUrgency, taskPriority, taskDesc, taskColor) => {
         if (title) {
             alert("Please save or cancel the current edit before editing another task.");
             return false;
@@ -24,6 +26,8 @@ const User = () => {
         setImportance(taskImportance);
         setUrgency(taskUrgency);
         setPriority(taskPriority);
+        setDesc(taskDesc);
+        setColor(taskColor);
         return true;
     }
 
@@ -35,12 +39,16 @@ const User = () => {
                 initialImportance={importance}
                 initialUrgency={urgency}
                 initialPriority={priority}
+                initialDesc={desc}
+                initialColor={color}
                 onAfterSubmit={() => {
                     setTitle("");
                     setRemTime(getLocalDateTime());
                     setImportance(1);
                     setUrgency(1);
                     setPriority(4);
+                    setDesc("");
+                    setColor("#ffffff");
                 }}
             />
             <CompletedTasks list={list} onEdit={onEdit} />

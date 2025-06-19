@@ -24,7 +24,7 @@ const PendingTasks = ({ list, onEdit }) => {
 
   const handleEdit = useCallback((id) => {
     const itemToEdit = list.find(item => item.id === id);
-    const res = onEdit(itemToEdit.title, itemToEdit.remTime, itemToEdit.importance, itemToEdit.urgency, itemToEdit.priority);
+    const res = onEdit(itemToEdit.title, itemToEdit.remTime, itemToEdit.importance, itemToEdit.urgency, itemToEdit.priority, itemToEdit.desc, itemToEdit.color);
     if (res)
       store.list = snap.list.filter(item => item.id !== id);
   }, [snap.list, list, onEdit]);
@@ -38,19 +38,19 @@ const PendingTasks = ({ list, onEdit }) => {
       <h3>
         PRIORITY LEVEL 1:
       </h3>
-      {grouped[1].map(item => <Task key={item.id} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
+      {grouped[1].map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
       <h3>
         PRIORITY LEVEL 2:
       </h3>
-      {grouped[2].map(item => <Task key={item.id} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
+      {grouped[2].map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
       <h3>
         PRIORITY LEVEL 3:
       </h3>
-      {grouped[3].map(item => <Task key={item.id} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
+      {grouped[3].map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
       <h3>
         PRIORITY LEVEL 4:
       </h3>
-      {grouped[4].map(item => <Task key={item.id} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
+      {grouped[4].map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
     </div>
   );
 }

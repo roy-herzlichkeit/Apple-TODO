@@ -16,7 +16,7 @@ const CompletedTasks = ({ list, onEdit }) => {
 
   const handleEdit = useCallback((id) => {
     const itemToEdit = list.find(item => item.id === id);
-    const res = onEdit(itemToEdit.title, itemToEdit.remTime, itemToEdit.importance, itemToEdit.urgency, itemToEdit.priority);
+    const res = onEdit(itemToEdit.title, itemToEdit.remTime, itemToEdit.importance, itemToEdit.urgency, itemToEdit.priority, itemToEdit.desc, itemToEdit.color);
     if (res)
       store.list = snap.list.filter(item => item.id !== id);
   }, [snap.list, list, onEdit]);
@@ -25,7 +25,7 @@ const CompletedTasks = ({ list, onEdit }) => {
     <div>
       <h3>COMPLETED TASKS:</h3>
       {
-        list.map(item => !item.status && <Task key={item.id} title={item.title} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)
+        list.map(item => !item.status && <Task key={item.id} desc={item.desc} title={item.title} remTime={item.remTime} color={item.color} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)
       }
     </div>
   );
