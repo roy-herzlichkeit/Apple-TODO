@@ -1,9 +1,9 @@
 import React, { memo, useMemo } from "react";
 import { calculateRemaining } from "../utils";
 
-const Task = ({ title, desc, remTime, color, priority=0, handleToggle, handleDeletion, handleEdit }) => {
-  const remaining = useMemo(() => calculateRemaining(remTime), [remTime]);
-
+const Task = ({ title, desc, remTime, color, priority = 0, handleToggle, handleDeletion, handleEdit }) => {
+    const remaining = useMemo(() => calculateRemaining(remTime), [remTime]);
+    
     return (
         <>
             <p>{title}</p>

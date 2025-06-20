@@ -25,7 +25,10 @@ const CompletedTasks = ({ list, onEdit }) => {
     <div>
       <h3>COMPLETED TASKS:</h3>
       {
-        list.map(item => !item.status && <Task key={item.id} desc={item.desc} title={item.title} remTime={item.remTime} color={item.color} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)
+        list
+          .filter(item => !item.status)
+          .sort((a, b) => new Date(a.remTime) - new Date(b.remTime))
+          .map(item => <Task key={item.id} desc={item.desc} title={item.title} remTime={item.remTime} color={item.color} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)
       }
     </div>
   );

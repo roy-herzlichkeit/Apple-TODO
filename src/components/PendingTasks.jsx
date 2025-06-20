@@ -1,10 +1,11 @@
-import { useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useSnapshot } from "valtio";
 import Task from "./Task";
 import { store } from "../utils";
 
 const PendingTasks = ({ list, onEdit }) => {
   const snap = useSnapshot(store);
+  const [filter, setFilter] = useState("all");
   const grouped = useMemo(() => {
     return snap.list
       .filter(item => item.status)
@@ -35,22 +36,37 @@ const PendingTasks = ({ list, onEdit }) => {
         PENDING TASKS:
       </h3>
       <br />
-      <h3>
-        PRIORITY LEVEL 1:
-      </h3>
-      {grouped[1].map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
-      <h3>
-        PRIORITY LEVEL 2:
-      </h3>
-      {grouped[2].map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
-      <h3>
-        PRIORITY LEVEL 3:
-      </h3>
-      {grouped[3].map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
-      <h3>
-        PRIORITY LEVEL 4:
-      </h3>
-      {grouped[4].map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
+      <div>
+        <button onClick={() => setFilter("all")}>All Tasks</button>
+        <button onClick={() => setFilter(1)}>Priority 1</button>
+        <button onClick={() => setFilter(2)}>Priority 2</button>
+        <button onClick={() => setFilter(3)}>Priority 3</button>
+        <button onClick={() => setFilter(4)}>Priority 4</button>
+      </div>
+      {(filter === "all" || filter === 1) && (
+        <>
+          <h3>PRIORITY LEVEL 1:</h3>
+          {grouped[1].slice().sort((a, b) => new Date(a.remTime) - new Date(b.remTime)).map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
+        </>
+      )}
+      {(filter === "all" || filter === 2) && (
+        <>
+          <h3>PRIORITY LEVEL 2:</h3>
+          {grouped[2].slice().sort((a, b) => new Date(a.remTime) - new Date(b.remTime)).map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
+        </>
+      )}
+      {(filter === "all" || filter === 3) && (
+        <>
+          <h3>PRIORITY LEVEL 3:</h3>
+          {grouped[3].slice().sort((a, b) => new Date(a.remTime) - new Date(b.remTime)).map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
+        </>
+      )}
+      {(filter === "all" || filter === 4) && (
+        <>
+          <h3>PRIORITY LEVEL 4:</h3>
+          {grouped[4].slice().sort((a, b) => new Date(a.remTime) - new Date(b.remTime)).map(item => <Task key={item.id} color={item.color} desc={item.desc} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)}
+        </>
+      )}
     </div>
   );
 }
