@@ -3,7 +3,8 @@ import { proxy } from "valtio";
 export const store = proxy({
     signedIn: false,
     list: [],
-    dark: true
+    dark: true,
+    task: false
 });
 
 export const calculateRemaining = (remTime) => {

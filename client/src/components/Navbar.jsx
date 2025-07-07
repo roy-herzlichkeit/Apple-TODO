@@ -13,13 +13,21 @@ const Navbar = () => {
                 <span className="font-ii">আমার</span> Tasks
             </h1>
             <div className='ml-auto'>
-                <button className="ml-auto p-2">
-                    <img src="add-icon.svg" alt="Add Task" />
+                <button
+                    aria-label="Add Task"
+                    className="ml-auto p-2"
+                    onClick={() => store.task = !store.task}
+                >
+                    <img src={snap.task ? "list-icon.svg" : "add-icon.svg"} alt="" />
                 </button>
-                <button className="ml-3 p-2" onClick={() => store.dark = !snap.dark}>
+                <button
+                    aria-label={snap.dark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                    className="ml-3 p-2"
+                    onClick={() => store.dark = !snap.dark}
+                >
                     <img
                         src={snap.dark ? "light-mode.svg" : "dark-mode.svg"}
-                        alt={snap.dark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                        alt=""
                     />
                 </button>
             </div>

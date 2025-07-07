@@ -8,7 +8,7 @@ import Navbar from "./Navbar";
 
 const User = () => {
     const snap = useSnapshot(store);
-    const list = snap.list;
+    const list = snap.list ?? [];
     const totalCount = list.length;
     const completedCount = list.filter(item => !item.status).length;
     const completionPercentage = totalCount ? (completedCount / totalCount) * 100 : 0;
@@ -17,7 +17,7 @@ const User = () => {
     const [importance, setImportance] = useState(1);
     const [urgency, setUrgency] = useState(1);
     const [priority, setPriority] = useState(4);
-    const [color, setColor] = useState("#ffffff");
+    const [color, setColor] = useState("#2a2727");
     const [view, setView] = useState("pending");
 
     const onEdit = (taskTitle, taskTime, taskImportance, taskUrgency, taskPriority, taskDesc, taskColor) => {
@@ -37,31 +37,38 @@ const User = () => {
     return (
         <div>
             <Navbar />
-            <InputBox
-                initialText={title}
-                initialRemTime={remTime}
-                initialImportance={importance}
-                initialUrgency={urgency}
-                initialPriority={priority}
-                initialColor={color}
-                onAfterSubmit={() => {
-                    setTitle("");
-                    setRemTime(getLocalDateTime());
-                    setImportance(1);
-                    setUrgency(1);
-                    setPriority(4);
-                    setColor("#ffffff");
-                }}
-            />
-            {/* <div>
-                Completion: {completionPercentage.toFixed(0)}%
-            </div>
-            <div>
-                <button onClick={() => setView("pending")}>Pending Tasks</button>
-                <button onClick={() => setView("completed")}>Completed Tasks</button>
-            </div>
-            {view === "completed" && <CompletedTasks list={list} onEdit={onEdit} />}
-            {view === "pending" && <PendingTasks list={list} onEdit={onEdit} />} */}
+            {
+                snap.task ?
+                    <InputBox
+                        initialText={title}
+                        initialRemTime={remTime}
+                        initialImportance={importance}
+                        initialUrgency={urgency}
+                        initialPriority={priority}
+                        initialColor={color}
+                        onAfterSubmit={() => {
+                            setTitle("");
+                            setRemTime(getLocalDateTime());
+                            setImportance(1);
+                            setUrgency(1);
+                            setPriority(4);
+                            setColor("#2a2727");
+                            store.task = !store.task;
+                        }}
+                    />
+                    :
+                    <>
+                        <div>
+                            Completion: {completionPercentage.toFixed(0)}%
+                        </div>
+                        <div>
+                            <button onClick={() => setView("pending")}>Pending Tasks</button>
+                            <button onClick={() => setView("completed")}>Completed Tasks</button>
+                        </div>
+                        {view === "completed" && <CompletedTasks list={list} onEdit={onEdit} />}
+                        {view === "pending" && <PendingTasks list={list} onEdit={onEdit} />}
+                    </>
+            }
         </div>
     );
 }

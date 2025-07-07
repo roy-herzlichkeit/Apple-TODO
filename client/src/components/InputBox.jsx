@@ -85,7 +85,7 @@ const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgen
             backgroundColor: snap.dark ? 'var(--dark-color-2)' : 'var(--color-2)',
             color: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)'
           }}>
-          <label htmlFor="todo" className="text-5xl">Add Task</label>
+          <label htmlFor="todo-text-input" className="text-5xl">Add Task</label>
           <input
             value={text}
             type="text"
@@ -97,7 +97,7 @@ const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgen
             style={controlStyle}
             autoComplete="off"
           />
-          <label htmlFor="todo">Time:</label>
+          <label htmlFor="todo-date">Deadline:</label>
           <div className="flex flex-col space-y-2 xs:flex-row xs:space-x-2 xs: justify-between">
             <input
               value={dateValue}
@@ -115,6 +115,7 @@ const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgen
               name="time"
               id="todo-time"
               min={dateValue === todayMinDate ? minTimeForNow : undefined}
+              aria-label="Deadline time"
               onChange={(e) => setTimeValue(e.target.value)}
               className="border-2 p-2 my-2"
               style={controlStyle}
