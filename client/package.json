@@ -10,11 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.10",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@gsap/react": "^2.1.2",
+    "@mui/material": "^7.2.0",
+    "@mui/x-date-pickers": "^8.7.0",
+    "@tailwindcss/vite": "^4.1.11",
+    "dayjs": "^1.11.13",
+    "gsap": "^3.13.0",
     "react": "^19.1.0",
     "react-color": "^2.19.3",
+    "react-datepicker": "^8.4.0",
+    "react-datetime-picker": "^6.0.1",
     "react-dom": "^19.1.0",
-    "tailwindcss": "^4.1.10",
+    "tailwindcss": "^4.1.11",
     "uuid": "^11.1.0",
     "valtio": "^2.1.5"
   },

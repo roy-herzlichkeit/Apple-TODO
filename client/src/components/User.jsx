@@ -4,6 +4,7 @@ import InputBox from "./InputBox";
 import PendingTasks from "./PendingTasks";
 import CompletedTasks from "./CompletedTasks";
 import { store, getLocalDateTime } from "../utils";
+import Navbar from "./Navbar";
 
 const User = () => {
     const snap = useSnapshot(store);
@@ -16,7 +17,6 @@ const User = () => {
     const [importance, setImportance] = useState(1);
     const [urgency, setUrgency] = useState(1);
     const [priority, setPriority] = useState(4);
-    const [desc, setDesc] = useState("");
     const [color, setColor] = useState("#ffffff");
     const [view, setView] = useState("pending");
 
@@ -30,20 +30,19 @@ const User = () => {
         setImportance(taskImportance);
         setUrgency(taskUrgency);
         setPriority(taskPriority);
-        setDesc(taskDesc);
         setColor(taskColor);
         return true;
     }
 
     return (
         <div>
+            <Navbar />
             <InputBox
                 initialText={title}
                 initialRemTime={remTime}
                 initialImportance={importance}
                 initialUrgency={urgency}
                 initialPriority={priority}
-                initialDesc={desc}
                 initialColor={color}
                 onAfterSubmit={() => {
                     setTitle("");
@@ -51,11 +50,10 @@ const User = () => {
                     setImportance(1);
                     setUrgency(1);
                     setPriority(4);
-                    setDesc("");
                     setColor("#ffffff");
                 }}
             />
-            <div>
+            {/* <div>
                 Completion: {completionPercentage.toFixed(0)}%
             </div>
             <div>
@@ -63,7 +61,7 @@ const User = () => {
                 <button onClick={() => setView("completed")}>Completed Tasks</button>
             </div>
             {view === "completed" && <CompletedTasks list={list} onEdit={onEdit} />}
-            {view === "pending" && <PendingTasks list={list} onEdit={onEdit} />}
+            {view === "pending" && <PendingTasks list={list} onEdit={onEdit} />} */}
         </div>
     );
 }

@@ -1,1 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri&family=Merriweather:opsz,wght@18..144,300&display=swap');
 @import "tailwindcss";
+
+:root {
+  --color-1: #2a2727;
+  --color-2: #ede8d0;
+  --color-3: #F5F5DC;
+  --dark-color-1: #ede8d0;
+  --dark-color-2: #2a2727;
+  --dark-color-3: #393433;
+}
+
+@theme {
+  --breakpoint-xs: 500px;
+}
+
+.font-i {
+  font-family: "Merriweather", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.font-ii {
+  font-family: "Hind Siliguri", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.slide {
+  display: inline-flex;
+  flex-direction: column;
+  transition: all cubic-bezier(0.71, 0.03, 0.34, 1);
+}
+
+.wrapper {
+  flex-direction: column;
+  animation: wordSlider 21s infinite cubic-bezier(0.9, 0.01, 0.3, 0.99);
+}
+
+@keyframes wordSlider {
+  0% {
+    transform: translateY(0.5%);
+  }
+
+  12.5% {
+    transform: translateY(-12.5%);
+  }
+
+  25% {
+    transform: translateY(-25%);
+  }
+
+  37.5% {
+    transform: translateY(-37.5%);
+  }
+
+  50% {
+    transform: translateY(-50%);
+  }
+
+  62.5% {
+    transform: translateY(-62.5%);
+  }
+
+  75% {
+    transform: translateY(-75%);
+  }
+
+  87.5% {
+    transform: translateY(-87.5%);
+  }
+}
+
+.picker-wrapper {
+  position: relative;
+}
+
+.color-swatch {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: inherit;
+  font-family: inherit;
+  border: 3px solid black;
+  box-shadow: 0.1em 0.1em;
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+.color-swatch:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
+.color-swatch:active {
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
+}
+.picker-popover {
+  position: absolute;
+  top: 100%;
+  left: 75%;
+  transform: translateX(-50%);
+  z-index: 10;
+  margin-top: 0.5rem;
+}
+
+button {
+  background: #fff;
+  font-family: inherit;
+  border: 3px solid black;
+  box-shadow: 0.1em 0.1em;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
+
+button:active {
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="color"],
+select {
+  background: #fff;
+  font-family: inherit;
+  border: 3px solid black;
+  box-shadow: 0.1em 0.1em;
+  cursor: pointer;
+}
+
+input[type="text"]:hover,
+input[type="date"]:hover,
+input[type="time"]:hover,
+input[type="color"]:hover,
+select:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
+
+input[type="text"]:active,
+input[type="date"]:active,
+input[type="time"]:active,
+input[type="color"]:active,
+select:active {
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
+}
+
+@media (max-width: 500px) {
+  .text-5xl { font-size: 1.875rem !important; }
+  .text-4xl { font-size: 1.5rem !important; }
+  .text-3xl { font-size: 1.25rem !important; }
+  .text-2xl { font-size: 1.125rem !important; }
+  .text-xl  { font-size: 1rem !important; }
+  .text-lg  { font-size: 0.875rem !important; }
+  .text-base{ font-size: 0.75rem !important; }
+  .text-sm  { font-size: 0.625rem !important; }
+  .text-xs  { font-size: 0.5rem !important; }
+}
+
+input[type="date"],
+input[type="time"] {
+  accent-color: var(--color-1);
+}
+body.dark input[type="date"],
+body.dark input[type="time"] {
+  accent-color: var(--dark-color-1);
+}
+
+select {
+  background-color: var(--color-2);
+  color: var(--color-1);
+  border-color: var(--color-1);
+}
+select option {
+  background-color: inherit;
+  color: inherit;
+}
+body.dark select {
+  background-color: var(--dark-color-2);
+  color: var(--dark-color-1);
+  border-color: var(--dark-color-1);
+}
