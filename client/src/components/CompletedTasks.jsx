@@ -21,14 +21,32 @@ const CompletedTasks = ({ list, onEdit }) => {
       store.list = snap.list.filter(item => item.id !== id);
   }, [snap.list, list, onEdit]);
 
+  const completedItems = list.filter(item => !item.status);
+
   return (
     <div>
-      <h3>COMPLETED TASKS:</h3>
+      {completedItems.length === 0 && (
+        <div
+          className="text-center p-4 italic"
+          style={{ color: snap.dark ? 'var(--dark-color-1)' : '#2a2727' }}
+        >
+          No completed tasks
+        </div>
+      )}
       {
-        list
-          .filter(item => !item.status)
-          .sort((a, b) => new Date(a.remTime) - new Date(b.remTime))
-          .map(item => <Task key={item.id} title={item.title} remTime={item.remTime} color={item.color} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} />)
+        completedItems
+          .slice().sort((a, b) => new Date(a.remTime) - new Date(b.remTime))
+          .map(item => (
+            <Task
+              key={item.id}
+              title={item.title}
+              remTime={item.remTime}
+              color={item.color}
+              handleDeletion={() => handleDeletion(item.id)}
+              handleToggle={() => handleToggle(item.id)}
+              handleEdit={() => handleEdit(item.id)}
+            />
+          ))
       }
     </div>
   );

@@ -8,6 +8,11 @@ import Navbar from "./Navbar";
 
 const User = () => {
     const snap = useSnapshot(store);
+    const controlStyle = {
+        backgroundColor: snap.dark ? 'var(--dark-color-2)' : 'var(--color-2)',
+        color: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)',
+        borderColor: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)'
+    };
     const list = snap.list ?? [];
     const totalCount = list.length;
     const completedCount = list.filter(item => !item.status).length;
@@ -31,12 +36,12 @@ const User = () => {
         setUrgency(taskUrgency);
         setPriority(taskPriority);
         setColor(taskColor);
+        store.task = !store.task;
         return true;
     }
 
     return (
         <div>
-            <Navbar />
             {
                 snap.task ?
                     <InputBox
@@ -57,17 +62,60 @@ const User = () => {
                         }}
                     />
                     :
-                    <>
-                        <div>
-                            Completion: {completionPercentage.toFixed(0)}%
+                    <section
+                        id="tasks"
+                        style={{
+                            backgroundColor: snap.dark ? 'var(--dark-color-2)' : 'var(--color-2)',
+                            color: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)'
+                        }}
+                        className="font-i m-4 mt-7 p-4"
+                    >
+                        <div className="mb-6 w-full flex flex-col text-center">
+                            <label htmlFor="completion-progress" className="block mb-2 text-2xl">
+                                {completionPercentage.toFixed(0)}%
+                            </label>
+                            <div
+                                id="completion-progress"
+                                role="progressbar"
+                                aria-label="Task completion progress"
+                                aria-valuemin={0}
+                                aria-valuemax={totalCount}
+                                aria-valuenow={completedCount}
+                                className="w-full h-4 overflow-hidden"
+                                style={{ backgroundColor: snap.dark ? 'var(--dark-color-3)' : 'var(--color-3)' }}
+                            >
+                                <div
+                                    className="h-full"
+                                    style={{
+                                        width: `${completionPercentage}%`,
+                                        backgroundColor: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)'
+                                    }}
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <button onClick={() => setView("pending")}>Pending Tasks</button>
-                            <button onClick={() => setView("completed")}>Completed Tasks</button>
+                        <div className="w-full flex items-center justify-center gap-8 mb-6">
+                            <button
+                                onClick={() => setView("pending")}
+                                aria-pressed={view === "pending"}
+                                aria-label="Show Pending Tasks"
+                                className="p-2 flex gap-2"
+                            >
+                                <span className="text-[#2a2727] hidden text-xl lg:block">Pending</span>
+                                <img src="tbd-icon.svg" alt="Pending Tasks icon" />
+                            </button>
+                            <button
+                                onClick={() => setView("completed")}
+                                aria-pressed={view === "completed"}
+                                aria-label="Show Completed Tasks"
+                                className="p-2 flex gap-2"
+                            >
+                                <span className="text-[#2a2727] hidden text-xl lg:block">Completed</span>
+                                <img src="completion-icon.svg" alt="Completed Tasks icon" />
+                            </button>
                         </div>
                         {view === "completed" && <CompletedTasks list={list} onEdit={onEdit} />}
                         {view === "pending" && <PendingTasks list={list} onEdit={onEdit} />}
-                    </>
+                    </section>
             }
         </div>
     );

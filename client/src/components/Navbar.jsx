@@ -4,12 +4,12 @@ import { useSnapshot } from 'valtio';
 const Navbar = () => {
     const snap = useSnapshot(store);
     return (
-        <div id="navbar-user" className="relative overflow-hidden flex items-center h-auto p-3"
+        <nav id="navbar-user" className="relative overflow-hidden flex items-center h-auto p-3"
             style={{
                 color: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)',
                 backgroundColor: snap.dark ? 'var(--dark-color-2)' : 'var(--color-2)'
             }}>
-            <h1 className="text-5xl ml-4">
+            <h1 className="text-5xl ml-4 font-i">
                 <span className="font-ii">আমার</span> Tasks
             </h1>
             <div className='ml-auto'>
@@ -31,7 +31,7 @@ const Navbar = () => {
                     />
                 </button>
             </div>
-        </div>
+        </nav>
     )
 }
 

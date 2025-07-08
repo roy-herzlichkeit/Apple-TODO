@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import User from "./components/User.jsx";
 import { store } from "./utils/index.js";
 import { useSnapshot } from "valtio";
+import Navbar from "./components/Navbar.jsx";
 
 const App = () => {
   const snap = useSnapshot(store);
@@ -16,10 +17,13 @@ const App = () => {
   }, [snap.dark]);
 
   return (
-    <main>
-      {snap.signedIn && <h1>Homepage</h1>}
-      {!snap.signedIn && <User />}
-    </main>
+    <>
+      <Navbar />
+      <main>
+        {snap.signedIn && <h1>Homepage</h1>}
+        {!snap.signedIn && <User />}
+      </main>
+    </>
   );
 }
 
