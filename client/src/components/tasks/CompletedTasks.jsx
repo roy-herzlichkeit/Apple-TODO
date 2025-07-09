@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useSnapshot } from "valtio";
 import Task from "./Task";
-import { store } from "../utils";
+import { store } from "../../utils";
 
 const CompletedTasks = ({ list, onEdit }) => {
   const snap = useSnapshot(store);

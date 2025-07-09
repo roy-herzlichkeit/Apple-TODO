@@ -90,14 +90,17 @@
     transform 0.1s ease,
     box-shadow 0.1s ease;
 }
+
 .color-swatch:hover {
   transform: translate(-0.05em, -0.05em);
   box-shadow: 0.15em 0.15em;
 }
+
 .color-swatch:active {
   transform: translate(0.05em, 0.05em);
   box-shadow: 0.05em 0.05em;
 }
+
 .picker-popover {
   position: absolute;
   top: 100%;
@@ -156,21 +159,45 @@ select:active {
 }
 
 @media (max-width: 500px) {
-  .text-5xl { font-size: 1.875rem !important; }
-  .text-4xl { font-size: 1.5rem !important; }
-  .text-3xl { font-size: 1.25rem !important; }
-  .text-2xl { font-size: 1.125rem !important; }
-  .text-xl  { font-size: 1rem !important; }
-  .text-lg  { font-size: 0.875rem !important; }
-  .text-base{ font-size: 0.75rem !important; }
-  .text-sm  { font-size: 0.625rem !important; }
-  .text-xs  { font-size: 0.5rem !important; }
+
+  .text-4xl {
+    font-size: 1.5rem !important;
+  }
+
+  .text-3xl {
+    font-size: 1.25rem !important;
+  }
+
+  .text-2xl {
+    font-size: 1.125rem !important;
+  }
+
+  .text-xl {
+    font-size: 1rem !important;
+  }
+
+  .text-lg {
+    font-size: 0.875rem !important;
+  }
+
+  .text-base {
+    font-size: 0.75rem !important;
+  }
+
+  .text-sm {
+    font-size: 0.625rem !important;
+  }
+
+  .text-xs {
+    font-size: 0.5rem !important;
+  }
 }
 
 input[type="date"],
 input[type="time"] {
   accent-color: var(--color-1);
 }
+
 body.dark input[type="date"],
 body.dark input[type="time"] {
   accent-color: var(--dark-color-1);
@@ -181,10 +208,12 @@ select {
   color: var(--color-1);
   border-color: var(--color-1);
 }
+
 select option {
   background-color: inherit;
   color: inherit;
 }
+
 body.dark select {
   background-color: var(--dark-color-2);
   color: var(--dark-color-1);

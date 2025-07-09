@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChromePicker } from 'react-color';
-import { store } from '../utils';
+import { store } from '../../utils';
 import { useSnapshot } from 'valtio';
 
 const ColorPicker = ({ name = 'color-tag', color = '#2a2727', onChange, className = '' }) => {

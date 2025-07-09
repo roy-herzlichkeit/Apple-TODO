@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSnapshot } from "valtio";
 import { v4 as uuidv4 } from "uuid";
-import { store, getLocalDateTime, getPriority } from "../utils";
-import ColorPicker from "./ColorPicker";
+import { store, getLocalDateTime, getPriority } from "../../utils";
+import ColorPicker from "../ui/ColorPicker";
 
 const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgency, initialPriority, initialDesc, initialColor, onAfterSubmit }) => {
   const snap = useSnapshot(store);

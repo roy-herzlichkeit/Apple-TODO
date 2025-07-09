@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { useSnapshot } from "valtio";
 import Task from "./Task";
-import { store } from "../utils";
+import { store } from "../../utils";
 
 const PendingTasks = ({ list, onEdit }) => {
   const snap = useSnapshot(store);
@@ -65,7 +65,7 @@ const PendingTasks = ({ list, onEdit }) => {
           </button>
           <button
             className="flex items-center gap-2 p-2 cursor-pointer"
-            onClick={() => setFilter(2)}
+            onClick={() => setFilter(3)}
             aria-label="Filter Scheduled Tasks"
           >
             <img src="schedule.svg" alt="Scheduled tasks icon" />
@@ -73,7 +73,7 @@ const PendingTasks = ({ list, onEdit }) => {
           </button>
           <button
             className="flex items-center gap-2 p-2 cursor-pointer"
-            onClick={() => setFilter(3)}
+            onClick={() => setFilter(2)}
             aria-label="Filter Delegate Tasks"
           >
             <img src="delegate.svg" alt="Delegate tasks icon" />

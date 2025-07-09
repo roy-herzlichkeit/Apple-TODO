@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { useSnapshot } from "valtio";
-import InputBox from "./InputBox";
-import PendingTasks from "./PendingTasks";
-import CompletedTasks from "./CompletedTasks";
+import { useUsername } from "../hooks/useAuth";
+import InputBox from "../components/tasks/InputBox";
+import PendingTasks from "../components/tasks/PendingTasks";
+import CompletedTasks from "../components/tasks/CompletedTasks";
 import { store, getLocalDateTime } from "../utils";
-import Navbar from "./Navbar";
+import Navbar from "../components/layout/Navbar";
+import PageTransition from "../components/ui/PageTransition";
 
 const User = () => {
     const snap = useSnapshot(store);
-    const controlStyle = {
-        backgroundColor: snap.dark ? 'var(--dark-color-2)' : 'var(--color-2)',
-        color: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)',
-        borderColor: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)'
-    };
+    const username = useUsername();
     const list = snap.list ?? [];
     const totalCount = list.length;
     const completedCount = list.filter(item => !item.status).length;
@@ -25,7 +23,7 @@ const User = () => {
     const [color, setColor] = useState("#2a2727");
     const [view, setView] = useState("pending");
 
-    const onEdit = (taskTitle, taskTime, taskImportance, taskUrgency, taskPriority, taskDesc, taskColor) => {
+    const onEdit = (taskTitle, taskTime, taskImportance, taskUrgency, taskPriority, taskColor) => {
         if (title) {
             alert("Please save or cancel the current edit before editing another task.");
             return false;
@@ -41,7 +39,8 @@ const User = () => {
     }
 
     return (
-        <div>
+        <PageTransition>
+            <Navbar />
             {
                 snap.task ?
                     <InputBox
@@ -68,7 +67,7 @@ const User = () => {
                             backgroundColor: snap.dark ? 'var(--dark-color-2)' : 'var(--color-2)',
                             color: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)'
                         }}
-                        className="font-i m-4 mt-7 p-4"
+                        className="font-i m-4 mt-7 p-4 md:m-10 md:p-7 lg:p-10 lg:m-20"
                     >
                         <div className="mb-6 w-full flex flex-col text-center">
                             <label htmlFor="completion-progress" className="block mb-2 text-2xl">
@@ -117,7 +116,7 @@ const User = () => {
                         {view === "pending" && <PendingTasks list={list} onEdit={onEdit} />}
                     </section>
             }
-        </div>
+        </PageTransition>
     );
 }
 

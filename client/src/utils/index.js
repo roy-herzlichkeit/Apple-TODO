@@ -7,6 +7,21 @@ export const store = proxy({
     task: false
 });
 
+export const words = [
+    {id: 0, text: "My"},
+    {id: 1, text: "আমার"},
+    {id: 2, text: "My"},
+    {id: 3, text: "Meine"},
+    {id: 4, text: "Mes"},
+    {id: 5, text: "Мои"},
+    {id: 6, text: "My"},
+    {id: 7, text: "আমার"},
+    {id: 8, text: "Meine"},
+    {id: 9, text: "Mes"},
+    {id: 11, text: "আমার"},
+    {id: 10, text: "Мои"}
+]
+
 export const calculateRemaining = (remTime) => {
     const now = new Date();
     const [datePart, timePart] = remTime.split('T');
