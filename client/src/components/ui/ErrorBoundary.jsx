@@ -22,7 +22,7 @@ class ErrorBoundary extends React.Component {
             <h1 className="text-4xl mb-4">Something went wrong</h1>
             <p className="text-lg mb-6">We're sorry for the inconvenience. Please try refreshing the page.</p>
             <button
-              className="px-6 py-3 border border-current"
+              className="px-6 py-3 border border-current text-[#2a2727]"
               onClick={() => window.location.reload()}
             >
               Refresh Page

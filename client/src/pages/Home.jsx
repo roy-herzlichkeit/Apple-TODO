@@ -5,6 +5,7 @@ import { useSnapshot } from "valtio";
 import { store } from "../utils";
 import { useNavigate } from "react-router-dom";
 import { useTransition } from "../context/TransitionContext";
+import { useAuth } from "../hooks/useAuth";
 import PageTransition from "../components/ui/PageTransition";
 import DarkModeToggle from "../components/ui/DarkModeToggle";
 import Footer from "../components/layout/Footer";
@@ -13,6 +14,7 @@ const Home = () => {
     const snap = useSnapshot(store);
     const navigate = useNavigate();
     const { triggerTransition } = useTransition();
+    const { login, isAuthenticated, user } = useAuth();
 
     useGSAP(() => {
         gsap.fromTo(
@@ -22,19 +24,36 @@ const Home = () => {
         );
     });
 
-    const Login = () => {
+    const handleGoogleSignIn = async () => {
+        try {
+            const result = await login();
+            if (result.success) {
+                triggerTransition(() => {
+                    store.signedIn = true;
+                    const username = result.user.displayName?.toLowerCase().replace(/\s+/g, '') || 
+                                   result.user.email?.split('@')[0] || 
+                                   'user';
+                    navigate(`/${username}`);
+                });
+            } else {
+                console.error('Login failed:', result.error);
+                alert('Login failed. Please try again.');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('Login failed. Please try again.');
+        }
+    };
+
+    if (isAuthenticated && user) {
+        const username = user.displayName?.toLowerCase().replace(/\s+/g, '') || 
+                        user.email?.split('@')[0] || 
+                        'user';
         triggerTransition(() => {
             store.signedIn = true;
-            navigate('/tester');
+            navigate(`/${username}`);
         });
-    };
-    
-    const SignUp = () => {
-        triggerTransition(() => {
-            store.signedIn = true;
-            navigate('/tester');
-        });
-    };
+    }
 
     return (
         <PageTransition>
@@ -68,17 +87,11 @@ const Home = () => {
                                 </h1>
                             </div>
                             <div className="flex flex-col gap-3 md:gap-5 mt-5 md:flex-row w-fit">
-                                <button className="flex gap-2 justify-around px-3 py-2" onClick={Login}>
+                                <button className="flex gap-2 justify-around px-3 py-2" onClick={handleGoogleSignIn}>
                                     <span className="text-[#2a2727]">
-                                        Login
+                                        Sign in with Google
                                     </span>
                                     <img src="login.svg" alt="" />
-                                </button>
-                                <button className="flex gap-2 justify-around px-3 py-2" onClick={SignUp}>
-                                    <span className="text-[#2a2727]">
-                                        Signup
-                                    </span>
-                                    <img src="signup.svg" alt="" />
                                 </button>
                             </div>
                         </header>

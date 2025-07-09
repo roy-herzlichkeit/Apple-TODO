@@ -1,7 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { useSnapshot } from 'valtio';
 import { useNavigate } from 'react-router-dom';
-import { useUsername } from '../../hooks/useAuth';
+import { useUsername, useAuth } from '../../hooks/useAuth';
 import { useTransition } from '../../context/TransitionContext';
 import { store } from '../../utils';
 
@@ -9,6 +9,7 @@ const Navbar = () => {
     const snap = useSnapshot(store, { sync: true });
     const navigate = useNavigate();
     const username = useUsername();
+    const { logout } = useAuth();
     const { triggerTransition } = useTransition();
 
     const navbarStyle = useMemo(() => ({
@@ -16,12 +17,26 @@ const Navbar = () => {
         backgroundColor: snap.dark ? 'var(--dark-color-2)' : 'var(--color-2)'
     }), [snap.dark]);
 
-    const handleLogout = useCallback(() => {
-        triggerTransition(() => {
-            store.signedIn = false;
-            navigate('/');
-        });
-    }, [triggerTransition, navigate]);
+    const handleLogout = useCallback(async () => {
+        try {
+            const result = await logout();
+            if (result.success) {
+                triggerTransition(() => {
+                    navigate('/');
+                });
+            } else {
+                console.error('Logout failed:', result.error);
+                triggerTransition(() => {
+                    navigate('/');
+                });
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
+            triggerTransition(() => {
+                navigate('/');
+            });
+        }
+    }, [logout, triggerTransition, navigate]);
 
     const toggleTask = useCallback(() => {
         store.task = !store.task;
