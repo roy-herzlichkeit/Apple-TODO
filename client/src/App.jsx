@@ -1,12 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import User from "./pages/User.jsx";
 import { store } from "./utils/index.js";
 import { useSnapshot } from "valtio";
-import Home from "./pages/Home.jsx";
-import NotFound from "./pages/NotFound.jsx";
 import { useTransition } from "./context/TransitionContext";
+
+const Home = lazy(() => import("./pages/Home.jsx"));
+const User = lazy(() => import("./pages/User.jsx"));
+const NotFound = lazy(() => import("./pages/NotFound.jsx"));
+
+const Loading = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="text-xl">Loading...</div>
+  </div>
+);
 
 const App = () => {
   const snap = useSnapshot(store);
@@ -70,10 +77,26 @@ const App = () => {
       <main>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Home />} />
-            <Route path="/tester" element={<User />} />
-            <Route path="/:username" element={<User />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="/" element={
+              <Suspense fallback={<Loading />}>
+                <Home />
+              </Suspense>
+            } />
+            <Route path="/tester" element={
+              <Suspense fallback={<Loading />}>
+                <User />
+              </Suspense>
+            } />
+            <Route path="/:username" element={
+              <Suspense fallback={<Loading />}>
+                <User />
+              </Suspense>
+            } />
+            <Route path="*" element={
+              <Suspense fallback={<Loading />}>
+                <NotFound />
+              </Suspense>
+            } />
           </Routes>
         </AnimatePresence>
       </main>

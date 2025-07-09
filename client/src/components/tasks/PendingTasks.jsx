@@ -4,9 +4,10 @@ import Task from "./Task";
 import { store } from "../../utils";
 
 const PendingTasks = ({ list, onEdit }) => {
-  const snap = useSnapshot(store);
+  const snap = useSnapshot(store, { sync: true });
   const [filter, setFilter] = useState("all");
   const [showFilterOptions, setShowFilterOptions] = useState(false);
+  
   const grouped = useMemo(() => {
     return snap.list
       .filter(item => item.status)
@@ -15,10 +16,16 @@ const PendingTasks = ({ list, onEdit }) => {
         return acc;
       }, { 1: [], 2: [], 3: [], 4: [] });
   }, [snap.list]);
-  const pendingItems = snap.list.filter(item => item.status);
+  
+  const pendingItems = useMemo(() => 
+    snap.list.filter(item => item.status), 
+    [snap.list]
+  );
 
   const handleToggle = useCallback((id) => {
-    store.list = snap.list.map((item) => item.id === id ? { ...item, status: !item.status } : item);
+    store.list = snap.list.map((item) => 
+      item.id === id ? { ...item, status: !item.status } : item
+    );
   }, [snap.list]);
 
   const handleDeletion = useCallback((id) => {
@@ -27,17 +34,54 @@ const PendingTasks = ({ list, onEdit }) => {
 
   const handleEdit = useCallback((id) => {
     const itemToEdit = list.find(item => item.id === id);
-    const res = onEdit(itemToEdit.title, itemToEdit.remTime, itemToEdit.importance, itemToEdit.urgency, itemToEdit.priority, itemToEdit.color);
-    if (res)
+    if (!itemToEdit) return;
+    
+    const res = onEdit(
+      itemToEdit.title, 
+      itemToEdit.remTime, 
+      itemToEdit.importance, 
+      itemToEdit.urgency, 
+      itemToEdit.priority, 
+      itemToEdit.color
+    );
+    
+    if (res) {
       store.list = snap.list.filter(item => item.id !== id);
+    }
   }, [snap.list, list, onEdit]);
+
+  const toggleFilterOptions = useCallback(() => {
+    setShowFilterOptions(prev => !prev);
+  }, []);
+
+  const getSortedTasks = useCallback((priorityGroup) => {
+    return priorityGroup.slice().sort((a, b) => new Date(a.remTime) - new Date(b.remTime));
+  }, []);
+
+  const renderTasksByPriority = useCallback((priority) => {
+    if (filter !== "all" && filter !== priority) return null;
+    
+    return getSortedTasks(grouped[priority]).map(item => (
+      <Task 
+        key={item.id} 
+        color={item.color} 
+        title={item.title} 
+        priority={item.priority} 
+        remTime={item.remTime} 
+        handleDeletion={() => handleDeletion(item.id)} 
+        handleToggle={() => handleToggle(item.id)} 
+        handleEdit={() => handleEdit(item.id)} 
+        imgGiven="done.svg" 
+      />
+    ));
+  }, [filter, grouped, getSortedTasks, handleDeletion, handleToggle, handleEdit]);
 
   return (
     <div>
       <div className="flex justify-center mb-2">
         <button
           className="flex items-center gap-2 p-2 cursor-pointer"
-          onClick={() => setShowFilterOptions(prev => !prev)}
+          onClick={toggleFilterOptions}
           aria-expanded={showFilterOptions}
           aria-controls="filter-options"
         >
@@ -45,6 +89,7 @@ const PendingTasks = ({ list, onEdit }) => {
           <img src="filter.svg" alt="Filter icon" />
         </button>
       </div>
+      
       {showFilterOptions && (
         <div id="filter-options" className="flex gap-2 justify-center mb-4">
           <button
@@ -89,6 +134,7 @@ const PendingTasks = ({ list, onEdit }) => {
           </button>
         </div>
       )}
+      
       {pendingItems.length === 0 && (
         <div
           className="text-center p-4 italic"
@@ -97,28 +143,13 @@ const PendingTasks = ({ list, onEdit }) => {
           No pending tasks
         </div>
       )}
-      {(filter === "all" || filter === 1) && (
-        <>
-          {grouped[1].slice().sort((a, b) => new Date(a.remTime) - new Date(b.remTime)).map(item => <Task key={item.id} color={item.color} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} imgGiven="done.svg" />)}
-        </>
-      )}
-      {(filter === "all" || filter === 2) && (
-        <>
-          {grouped[2].slice().sort((a, b) => new Date(a.remTime) - new Date(b.remTime)).map(item => <Task key={item.id} color={item.color} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} imgGiven="done.svg" />)}
-        </>
-      )}
-      {(filter === "all" || filter === 3) && (
-        <>
-          {grouped[3].slice().sort((a, b) => new Date(a.remTime) - new Date(b.remTime)).map(item => <Task key={item.id} color={item.color} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} imgGiven="done.svg" />)}
-        </>
-      )}
-      {(filter === "all" || filter === 4) && (
-        <>
-          {grouped[4].slice().sort((a, b) => new Date(a.remTime) - new Date(b.remTime)).map(item => <Task key={item.id} color={item.color} title={item.title} priority={item.priority} remTime={item.remTime} handleDeletion={() => handleDeletion(item.id)} handleToggle={() => handleToggle(item.id)} handleEdit={() => handleEdit(item.id)} imgGiven="done.svg" />)}
-        </>
-      )}
+      
+      {renderTasksByPriority(1)}
+      {renderTasksByPriority(2)}
+      {renderTasksByPriority(3)}
+      {renderTasksByPriority(4)}
     </div>
   );
-}
+};
 
 export default PendingTasks;
