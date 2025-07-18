@@ -1,11 +1,148 @@
 import { proxy } from "valtio";
+import { apiService } from "../services/api.js";
+
+const getInitialTheme = () => {
+    const savedTheme = localStorage.getItem('amarTasks-theme');
+    return savedTheme ? JSON.parse(savedTheme) : true;
+};
+
+const getInitialSignedIn = () => {
+    const savedState = localStorage.getItem('amarTasks-signedIn');
+    return savedState ? JSON.parse(savedState) : false;
+};
 
 export const store = proxy({
-    signedIn: false,
+    signedIn: getInitialSignedIn(),
     list: [],
-    dark: true,
-    task: false
+    dark: getInitialTheme(),
+    task: false,
+    loading: false,
+    error: null
 });
+
+export const setTheme = (isDark) => {
+    store.dark = isDark;
+    localStorage.setItem('amarTasks-theme', JSON.stringify(isDark));
+};
+
+export const toggleTheme = () => {
+    const newTheme = !store.dark;
+    setTheme(newTheme);
+};
+
+export const setSignedIn = (isSignedIn) => {
+    store.signedIn = isSignedIn;
+    localStorage.setItem('amarTasks-signedIn', JSON.stringify(isSignedIn));
+};
+
+export const loadTasks = async () => {
+    try {
+        store.loading = true;
+        store.error = null;
+        const response = await apiService.getTasks();
+        
+        if (response.success) {
+            store.list = response.tasks.map(task => ({
+                id: task._id,
+                title: task.title,
+                status: task.status,
+                remTime: task.remTime,
+                importance: task.importance,
+                urgency: task.urgency,
+                priority: task.priority,
+                color: task.color
+            }));
+        }
+    } catch (error) {
+        store.error = error.message;
+        console.error('Failed to load tasks:', error);
+    } finally {
+        store.loading = false;
+    }
+};
+
+export const saveTask = async (task) => {
+    try {
+        store.loading = true;
+        store.error = null;
+        
+        const response = await apiService.createTask({
+            title: task.title,
+            remTime: task.remTime,
+            importance: task.importance,
+            urgency: task.urgency,
+            priority: task.priority,
+            color: task.color
+        });
+        
+        if (response.success) {
+            const newTask = {
+                id: response.task._id,
+                title: response.task.title,
+                status: response.task.status,
+                remTime: response.task.remTime,
+                importance: response.task.importance,
+                urgency: response.task.urgency,
+                priority: response.task.priority,
+                color: response.task.color
+            };
+            store.list = [newTask, ...store.list];
+            return newTask;
+        }
+    } catch (error) {
+        store.error = error.message;
+        console.error('Failed to save task:', error);
+        throw error;
+    } finally {
+        store.loading = false;
+    }
+};
+
+export const updateTask = async (taskId, updates) => {
+    try {
+        store.loading = true;
+        store.error = null;
+        
+        const response = await apiService.updateTask(taskId, updates);
+        
+        if (response.success) {
+            store.list = store.list.map(task => 
+                task.id === taskId 
+                    ? { 
+                        ...task, 
+                        ...updates,
+                        id: response.task._id 
+                    }
+                    : task
+            );
+        }
+    } catch (error) {
+        store.error = error.message;
+        console.error('Failed to update task:', error);
+        throw error;
+    } finally {
+        store.loading = false;
+    }
+};
+
+export const deleteTask = async (taskId) => {
+    try {
+        store.loading = true;
+        store.error = null;
+        
+        const response = await apiService.deleteTask(taskId);
+        
+        if (response.success) {
+            store.list = store.list.filter(task => task.id !== taskId);
+        }
+    } catch (error) {
+        store.error = error.message;
+        console.error('Failed to delete task:', error);
+        throw error;
+    } finally {
+        store.loading = false;
+    }
+}
 
 export const words = [
     {id: 0, text: "My"},

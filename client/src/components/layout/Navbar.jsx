@@ -2,7 +2,7 @@ import { useMemo, useCallback } from 'react';
 import { useSnapshot } from 'valtio';
 import { useNavigate } from 'react-router-dom';
 import { useTransition } from '../../context/TransitionContext';
-import { store } from '../../utils';
+import { store, toggleTheme, setSignedIn } from '../../utils';
 
 const Navbar = () => {
     const snap = useSnapshot(store, { sync: true });
@@ -16,7 +16,7 @@ const Navbar = () => {
 
     const handleLogout = useCallback(() => {
         triggerTransition(() => {
-            store.signedIn = false;
+            setSignedIn(false);
             navigate('/');
         });
     }, [triggerTransition, navigate]);
@@ -26,8 +26,8 @@ const Navbar = () => {
     }, []);
 
     const toggleDarkMode = useCallback(() => {
-        store.dark = !snap.dark;
-    }, [snap.dark]);
+        toggleTheme();
+    }, []);
 
     return (
         <nav

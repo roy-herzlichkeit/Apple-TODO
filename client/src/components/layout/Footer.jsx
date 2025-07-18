@@ -18,15 +18,15 @@ const Footer = () => {
     }), [snap.dark]);
 
     return (
-        <footer 
+        <footer
             className="w-full py-4 px-6 text-center font-i text-xs md:text-sm"
             style={footerStyle}
         >
             <p>
                 Made by{' '}
-                <a 
-                    href="https://github.com/roy-herzlichkeit" 
-                    target="_blank" 
+                <a
+                    href="https://github.com/roy-herzlichkeit"
+                    target="_blank"
                     rel="noopener noreferrer"
                     style={linkStyle}
                     className="hover:opacity-80 transition-opacity duration-200"

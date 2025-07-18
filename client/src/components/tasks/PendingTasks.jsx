@@ -1,13 +1,13 @@
 import { useState, useMemo, useCallback } from "react";
 import { useSnapshot } from "valtio";
 import Task from "./Task";
-import { store } from "../../utils";
+import { store, updateTask, deleteTask } from "../../utils";
 
 const PendingTasks = ({ list, onEdit }) => {
   const snap = useSnapshot(store, { sync: true });
   const [filter, setFilter] = useState("all");
   const [showFilterOptions, setShowFilterOptions] = useState(false);
-  
+
   const grouped = useMemo(() => {
     return snap.list
       .filter(item => item.status)
@@ -16,39 +16,52 @@ const PendingTasks = ({ list, onEdit }) => {
         return acc;
       }, { 1: [], 2: [], 3: [], 4: [] });
   }, [snap.list]);
-  
-  const pendingItems = useMemo(() => 
-    snap.list.filter(item => item.status), 
+
+  const pendingItems = useMemo(() =>
+    snap.list.filter(item => item.status),
     [snap.list]
   );
 
-  const handleToggle = useCallback((id) => {
-    store.list = snap.list.map((item) => 
-      item.id === id ? { ...item, status: !item.status } : item
-    );
+  const handleToggle = useCallback(async (id) => {
+    try {
+      const task = snap.list.find(item => item.id === id);
+      if (task) {
+        await updateTask(id, { status: !task.status });
+      }
+    } catch (error) {
+      console.error('Failed to toggle task:', error);
+    }
   }, [snap.list]);
 
-  const handleDeletion = useCallback((id) => {
-    store.list = snap.list.filter(item => item.id !== id);
-  }, [snap.list]);
+  const handleDeletion = useCallback(async (id) => {
+    try {
+      await deleteTask(id);
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+    }
+  }, []);
 
-  const handleEdit = useCallback((id) => {
+  const handleEdit = useCallback(async (id) => {
     const itemToEdit = list.find(item => item.id === id);
     if (!itemToEdit) return;
-    
+
     const res = onEdit(
-      itemToEdit.title, 
-      itemToEdit.remTime, 
-      itemToEdit.importance, 
-      itemToEdit.urgency, 
-      itemToEdit.priority, 
+      itemToEdit.title,
+      itemToEdit.remTime,
+      itemToEdit.importance,
+      itemToEdit.urgency,
+      itemToEdit.priority,
       itemToEdit.color
     );
-    
+
     if (res) {
-      store.list = snap.list.filter(item => item.id !== id);
+      try {
+        await deleteTask(id);
+      } catch (error) {
+        console.error('Failed to delete task during edit:', error);
+      }
     }
-  }, [snap.list, list, onEdit]);
+  }, [list, onEdit]);
 
   const toggleFilterOptions = useCallback(() => {
     setShowFilterOptions(prev => !prev);
@@ -60,18 +73,18 @@ const PendingTasks = ({ list, onEdit }) => {
 
   const renderTasksByPriority = useCallback((priority) => {
     if (filter !== "all" && filter !== priority) return null;
-    
+
     return getSortedTasks(grouped[priority]).map(item => (
-      <Task 
-        key={item.id} 
-        color={item.color} 
-        title={item.title} 
-        priority={item.priority} 
-        remTime={item.remTime} 
-        handleDeletion={() => handleDeletion(item.id)} 
-        handleToggle={() => handleToggle(item.id)} 
-        handleEdit={() => handleEdit(item.id)} 
-        imgGiven="done.svg" 
+      <Task
+        key={item.id}
+        color={item.color}
+        title={item.title}
+        priority={item.priority}
+        remTime={item.remTime}
+        handleDeletion={() => handleDeletion(item.id)}
+        handleToggle={() => handleToggle(item.id)}
+        handleEdit={() => handleEdit(item.id)}
+        imgGiven="done.svg"
       />
     ));
   }, [filter, grouped, getSortedTasks, handleDeletion, handleToggle, handleEdit]);
@@ -89,7 +102,7 @@ const PendingTasks = ({ list, onEdit }) => {
           <img src="filter.svg" alt="Filter icon" />
         </button>
       </div>
-      
+
       {showFilterOptions && (
         <div id="filter-options" className="flex gap-2 justify-center mb-4">
           <button
@@ -134,7 +147,7 @@ const PendingTasks = ({ list, onEdit }) => {
           </button>
         </div>
       )}
-      
+
       {pendingItems.length === 0 && (
         <div
           className="text-center p-4 italic"
@@ -143,7 +156,7 @@ const PendingTasks = ({ list, onEdit }) => {
           No pending tasks
         </div>
       )}
-      
+
       {renderTasksByPriority(1)}
       {renderTasksByPriority(2)}
       {renderTasksByPriority(3)}

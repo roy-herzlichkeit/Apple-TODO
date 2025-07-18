@@ -1,18 +1,17 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSnapshot } from "valtio";
-import { v4 as uuidv4 } from "uuid";
-import { store, getLocalDateTime, getPriority, debounce } from "../../utils";
+import { store, getLocalDateTime, getPriority, debounce, saveTask } from "../../utils";
 import ColorPicker from "../ui/ColorPicker";
 
 const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgency, initialPriority, initialDesc, initialColor, onAfterSubmit }) => {
   const snap = useSnapshot(store, { sync: true });
-  
+
   const controlStyle = useMemo(() => ({
     backgroundColor: snap.dark ? 'var(--dark-color-2)' : 'var(--color-2)',
     color: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)',
     borderColor: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)'
   }), [snap.dark]);
-  
+
   const [text, setText] = useState(initialText || "");
   const [dateValue, setDateValue] = useState(() => {
     const dt = initialRemTime || getLocalDateTime(new Date());
@@ -26,7 +25,7 @@ const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgen
   const [urgency, setUrgency] = useState(initialUrgency || 1);
   const [priority, setPriority] = useState(initialPriority || 4);
   const [color, setColor] = useState(initialColor || "#2a2727");
-  
+
   const todayMinDate = useMemo(() => getLocalDateTime(new Date()).split('T')[0], []);
   const minTimeForNow = useMemo(() => getLocalDateTime(new Date(Date.now() + 60000)).split('T')[1], []);
 
@@ -70,29 +69,31 @@ const InputBox = ({ initialText, initialRemTime, initialImportance, initialUrgen
     setColor(initialColor || "#2a2727");
   }, [initialColor]);
 
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     if (!text.trim()) return;
-    
-    const title = text.trim();
-    const id = uuidv4();
-    const calculatedPriority = getPriority(importance, urgency);
-    const remTimeCombined = `${dateValue}T${timeValue}`;
-    
-    store.list = [...snap.list, { 
-      id, 
-      title, 
-      status: true, 
-      remTime: remTimeCombined, 
-      importance, 
-      urgency, 
-      priority: calculatedPriority, 
-      color 
-    }];
-    
-    resetForm();
-    onAfterSubmit?.();
-  }, [text, dateValue, timeValue, importance, urgency, color, snap.list, resetForm, onAfterSubmit]);
+
+    try {
+      const title = text.trim();
+      const calculatedPriority = getPriority(importance, urgency);
+      const remTimeCombined = `${dateValue}T${timeValue}`;
+
+      await saveTask({
+        title,
+        status: true,
+        remTime: remTimeCombined,
+        importance,
+        urgency,
+        priority: calculatedPriority,
+        color
+      });
+
+      resetForm();
+      onAfterSubmit?.();
+    } catch (error) {
+      console.error('Failed to save task:', error);
+    }
+  }, [text, dateValue, timeValue, importance, urgency, color, resetForm, onAfterSubmit]);
 
   const handleTextChange = useCallback((e) => {
     debouncedSetText(e.target.value);

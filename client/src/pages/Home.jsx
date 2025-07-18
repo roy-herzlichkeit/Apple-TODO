@@ -1,4 +1,4 @@
-import { words } from "../utils";
+import { words, setSignedIn } from "../utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useSnapshot } from "valtio";
@@ -24,14 +24,14 @@ const Home = () => {
 
     const handleSignIn = () => {
         triggerTransition(() => {
-            store.signedIn = true;
+            setSignedIn(true);
             navigate('/user');
         });
     };
 
     const handleSignUp = () => {
         triggerTransition(() => {
-            store.signedIn = true;
+            setSignedIn(true);
             navigate('/user');
         });
     };

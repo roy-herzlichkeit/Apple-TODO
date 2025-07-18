@@ -39,8 +39,8 @@ const ColorPicker = ({ name = 'color-tag', color = '#2a2727', onChange, classNam
   }, [onChange]);
 
   return (
-    <div 
-      ref={wrapperRef} 
+    <div
+      ref={wrapperRef}
       className={`picker-wrapper ${className} flex flex-row justify-between items-center text-center my-2`}
       style={textStyle}
     >

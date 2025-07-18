@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from 'react';
 import { useSnapshot } from 'valtio';
-import { store } from '../../utils';
+import { store, toggleTheme } from '../../utils';
 import { useHasNavbar } from '../../hooks/useNavbar';
 
 const DarkModeToggle = ({ className = "" }) => {
@@ -8,8 +8,8 @@ const DarkModeToggle = ({ className = "" }) => {
     const hasNavbar = useHasNavbar();
 
     const toggleDarkMode = useCallback(() => {
-        store.dark = !snap.dark;
-    }, [snap.dark]);
+        toggleTheme();
+    }, []);
 
     const imageSrc = useMemo(() => {
         return snap.dark ? "light-mode.svg" : "dark-mode.svg";
@@ -22,7 +22,7 @@ const DarkModeToggle = ({ className = "" }) => {
     if (hasNavbar) {
         return null;
     }
-    
+
     return (
         <button
             aria-label={ariaLabel}

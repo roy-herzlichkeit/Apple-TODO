@@ -6,45 +6,45 @@ import { store } from "../../utils";
 const Task = memo(({ title, remTime, color, priority = 0, handleToggle, handleDeletion, handleEdit, imgGiven = "undone.svg" }) => {
   const snap = useSnapshot(store, { sync: true });
   const [expanded, setExpanded] = useState(false);
-  
+
   const getMaxChars = useCallback(() => {
     const w = window.innerWidth;
     if (w < 640) return 20;
     if (w < 1024) return 40;
     return 60;
   }, []);
-  
+
   const [maxChars, setMaxChars] = useState(getMaxChars());
-  
+
   useEffect(() => {
     const onResize = () => setMaxChars(getMaxChars());
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, [getMaxChars]);
-  
+
   const isLong = useMemo(() => title.length > maxChars, [title.length, maxChars]);
   const displayTitle = useMemo(() => {
     return expanded || !isLong ? title : `${title.slice(0, maxChars)}...`;
   }, [expanded, isLong, title, maxChars]);
-  
+
   const remaining = useMemo(() => calculateRemaining(remTime), [remTime]);
-  
+
   const controlStyle = useMemo(() => ({
     backgroundColor: snap.dark ? 'var(--dark-color-2)' : 'var(--color-2)',
     color: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)',
     borderColor: snap.dark ? 'var(--dark-color-1)' : 'var(--color-1)'
   }), [snap.dark]);
-  
-  const cardStyle = useMemo(() => ({ 
-    backgroundColor: snap.dark ? 'var(--dark-color-3)' : 'var(--color-3)', 
-    color: controlStyle.color, 
-    borderBottom: `4px solid ${color}` 
+
+  const cardStyle = useMemo(() => ({
+    backgroundColor: snap.dark ? 'var(--dark-color-3)' : 'var(--color-3)',
+    color: controlStyle.color,
+    borderBottom: `4px solid ${color}`
   }), [snap.dark, controlStyle.color, color]);
-  
+
   const toggleExpanded = useCallback(() => {
     setExpanded(prev => !prev);
   }, []);
-  
+
   return (
     <div className="flex flex-col items-start justify-start p-3 mb-2 gap-2" style={cardStyle}>
       <div className="flex flex-col items-start space-y-2 w-full">

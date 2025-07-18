@@ -22,13 +22,13 @@ const NotFound = () => {
                 <div className="flex-1 flex items-center justify-center font-i">
                     <div className="text-center">
                         <h1 className="text-6xl md:text-8xl font-i mb-4">404</h1>
-                        <p className="text-xl mb-8">Page not found</p>
+                        <p className="text-xl mb-8 text-red-500">Page not found</p>
                         <div className="flex gap-4 justify-center">
                             <button
-                                className="flex gap-2 justify-center items-center px-4 py-2 rounded border"
+                                className="flex gap-2 justify-center items-center px-4 py-2 border"
                                 onClick={handleGoHome}
                             >
-                                <span>Go Back to Home</span>
+                                <span className='text-[#2a2727]'>Go Back to Home</span>
                             </button>
                         </div>
                     </div>

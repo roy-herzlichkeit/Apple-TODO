@@ -1,38 +1,51 @@
 import { useCallback, useMemo } from "react";
 import { useSnapshot } from "valtio";
 import Task from "./Task";
-import { store } from "../../utils";
+import { store, updateTask, deleteTask } from "../../utils";
 
 const CompletedTasks = ({ list, onEdit }) => {
   const snap = useSnapshot(store, { sync: true });
 
-  const handleToggle = useCallback((id) => {
-    store.list = snap.list.map((item) => 
-      item.id === id ? { ...item, status: !item.status } : item
-    );
+  const handleToggle = useCallback(async (id) => {
+    try {
+      const task = snap.list.find(item => item.id === id);
+      if (task) {
+        await updateTask(id, { status: !task.status });
+      }
+    } catch (error) {
+      console.error('Failed to toggle task:', error);
+    }
   }, [snap.list]);
 
-  const handleDeletion = useCallback((id) => {
-    store.list = snap.list.filter(item => item.id !== id);
-  }, [snap.list]);
+  const handleDeletion = useCallback(async (id) => {
+    try {
+      await deleteTask(id);
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+    }
+  }, []);
 
-  const handleEdit = useCallback((id) => {
+  const handleEdit = useCallback(async (id) => {
     const itemToEdit = list.find(item => item.id === id);
     if (!itemToEdit) return;
-    
+
     const res = onEdit(
-      itemToEdit.title, 
-      itemToEdit.remTime, 
-      itemToEdit.importance, 
-      itemToEdit.urgency, 
-      itemToEdit.priority, 
+      itemToEdit.title,
+      itemToEdit.remTime,
+      itemToEdit.importance,
+      itemToEdit.urgency,
+      itemToEdit.priority,
       itemToEdit.color
     );
-    
+
     if (res) {
-      store.list = snap.list.filter(item => item.id !== id);
+      try {
+        await deleteTask(id);
+      } catch (error) {
+        console.error('Failed to delete task during edit:', error);
+      }
     }
-  }, [snap.list, list, onEdit]);
+  }, [list, onEdit]);
 
   const completedItems = useMemo(() => {
     return list
@@ -51,7 +64,7 @@ const CompletedTasks = ({ list, onEdit }) => {
           No completed tasks
         </div>
       )}
-      
+
       {completedItems.map(item => (
         <Task
           key={item.id}

@@ -1,15 +1,19 @@
-import { useMemo, useCallback, useState } from "react";
+import { useMemo, useCallback, useState, useEffect } from "react";
 import { useSnapshot } from "valtio";
 import InputBox from "../components/tasks/InputBox";
 import PendingTasks from "../components/tasks/PendingTasks";
 import CompletedTasks from "../components/tasks/CompletedTasks";
-import { store, getLocalDateTime } from "../utils";
+import { store, getLocalDateTime, loadTasks } from "../utils";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import PageTransition from "../components/ui/PageTransition";
 
 const User = () => {
     const snap = useSnapshot(store, { sync: true });
+    
+    useEffect(() => {
+        loadTasks();
+    }, []);
     
     const taskStats = useMemo(() => {
         const list = snap.list ?? [];
@@ -95,6 +99,22 @@ const User = () => {
                             initialColor={editingState.color}
                             onAfterSubmit={resetEditingState}
                         />
+                    ) : snap.loading ? (
+                        <div className="flex-1 flex items-center justify-center mt-50">
+                            <div className="text-xl">Loading tasks...</div>
+                        </div>
+                    ) : snap.error ? (
+                        <div className="flex-1 flex items-center justify-center mt-50">
+                            <div className="text-center">
+                                <div className="text-xl text-red-500 mb-4">Error: {snap.error}</div>
+                                <button 
+                                    onClick={loadTasks}
+                                    className="px-4 py-2 border text-[#2a2727]"
+                                >
+                                    Retry
+                                </button>
+                            </div>
+                        </div>
                     ) : (
                         <section
                             id="tasks"
