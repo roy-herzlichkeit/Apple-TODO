@@ -1,0 +1,4 @@
+.env
+.env.example
+AWS_DEPLOYMENT_GUIDE.md
+DOCKER_README.md

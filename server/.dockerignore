@@ -1,0 +1,14 @@
+# Docker ignore patterns
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.coverage
+.vscode
+*.log
+Dockerfile
+.dockerignore
