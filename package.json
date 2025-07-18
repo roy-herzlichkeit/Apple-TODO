@@ -1,11 +1,5 @@
 {
-  "scripts": {
-    "docker:dev": "docker-compose up --build",
-    "docker:prod": "docker-compose -f docker-compose.prod.yml up --build -d",
-    "docker:stop": "docker-compose down",
-    "docker:stop-prod": "docker-compose -f docker-compose.prod.yml down",
-    "docker:logs": "docker-compose logs -f",
-    "docker:logs-prod": "docker-compose -f docker-compose.prod.yml logs -f",
-    "health-check": "bash health-check.sh"
+  "dependencies": {
+    "express": "^5.1.0"
   }
 }
