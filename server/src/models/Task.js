@@ -40,8 +40,7 @@ const taskSchema = new mongoose.Schema({
     },
     userId: {
         type: String,
-        required: true,
-        default: 'tester' 
+        required: true
     }
 }, {
     timestamps: true

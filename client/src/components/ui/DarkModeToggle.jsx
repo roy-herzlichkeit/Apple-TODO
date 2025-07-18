@@ -3,7 +3,7 @@ import { useSnapshot } from 'valtio';
 import { store, toggleTheme } from '../../utils';
 import { useHasNavbar } from '../../hooks/useNavbar';
 
-const DarkModeToggle = ({ className = "" }) => {
+const DarkModeToggle = ({ className = "fixed" }) => {
     const snap = useSnapshot(store, { sync: true });
     const hasNavbar = useHasNavbar();
 
@@ -26,7 +26,7 @@ const DarkModeToggle = ({ className = "" }) => {
     return (
         <button
             aria-label={ariaLabel}
-            className={`p-2 fixed top-4 right-4 z-50 ${className}`}
+            className={`p-2 top-4 right-4 z-50 ${className}`}
             onClick={toggleDarkMode}
         >
             <img

@@ -1,11 +1,17 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 class ApiService {
+    getAuthHeader() {
+        const token = localStorage.getItem('amarTasks-token');
+        return token ? { 'Authorization': `Bearer ${token}` } : {};
+    }
+
     async request(endpoint, options = {}) {
         const url = `${API_BASE_URL}${endpoint}`;
         const config = {
             headers: {
                 'Content-Type': 'application/json',
+                ...this.getAuthHeader(),
                 ...options.headers,
             },
             ...options,
@@ -28,6 +34,20 @@ class ApiService {
             console.error('API request failed:', error);
             throw error;
         }
+    }
+
+    async register(userData) {
+        return this.request('/users/register', {
+            method: 'POST',
+            body: userData,
+        });
+    }
+
+    async login(credentials) {
+        return this.request('/users/login', {
+            method: 'POST',
+            body: credentials,
+        });
     }
 
     async getTasks() {

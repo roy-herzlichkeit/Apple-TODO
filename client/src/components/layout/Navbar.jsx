@@ -2,7 +2,7 @@ import { useMemo, useCallback } from 'react';
 import { useSnapshot } from 'valtio';
 import { useNavigate } from 'react-router-dom';
 import { useTransition } from '../../context/TransitionContext';
-import { store, toggleTheme, setSignedIn } from '../../utils';
+import { store, toggleTheme } from '../../utils';
 
 const Navbar = () => {
     const snap = useSnapshot(store, { sync: true });
@@ -16,8 +16,15 @@ const Navbar = () => {
 
     const handleLogout = useCallback(() => {
         triggerTransition(() => {
-            setSignedIn(false);
-            navigate('/');
+            navigate('/', { replace: true });
+            // Clear auth state AFTER the transition completes
+            setTimeout(() => {
+                store.signedIn = false;
+                localStorage.removeItem('amarTasks-token');
+                localStorage.removeItem('amarTasks-user');
+                localStorage.removeItem('amarTasks-signedIn');
+                store.list = [];
+            }, 1000); // Wait for transition to complete
         });
     }, [triggerTransition, navigate]);
 

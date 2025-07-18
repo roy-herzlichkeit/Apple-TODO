@@ -7,8 +7,9 @@ const getInitialTheme = () => {
 };
 
 const getInitialSignedIn = () => {
-    const savedState = localStorage.getItem('amarTasks-signedIn');
-    return savedState ? JSON.parse(savedState) : false;
+    const token = localStorage.getItem('amarTasks-token');
+    const user = localStorage.getItem('amarTasks-user');
+    return !!(token && user);
 };
 
 export const store = proxy({
@@ -32,7 +33,12 @@ export const toggleTheme = () => {
 
 export const setSignedIn = (isSignedIn) => {
     store.signedIn = isSignedIn;
-    localStorage.setItem('amarTasks-signedIn', JSON.stringify(isSignedIn));
+    if (!isSignedIn) {
+        localStorage.removeItem('amarTasks-token');
+        localStorage.removeItem('amarTasks-user');
+        localStorage.removeItem('amarTasks-signedIn');
+        store.list = [];
+    }
 };
 
 export const loadTasks = async () => {

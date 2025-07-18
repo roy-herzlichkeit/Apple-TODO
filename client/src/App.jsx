@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import User from "./pages/User.jsx";
+import { Home, User, Login, Signup, NotFound, Forbidden } from "./pages";
 import { store } from "./utils/index.js";
 import { useSnapshot } from "valtio";
-import Home from "./pages/Home.jsx";
-import NotFound from "./pages/NotFound.jsx";
 import { useTransition } from "./context/TransitionContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const snap = useSnapshot(store);
@@ -71,7 +70,14 @@ const App = () => {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
-            <Route path="/user" element={<User />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forbidden" element={<Forbidden />} />
+            <Route path="/user" element={
+              <ProtectedRoute>
+                <User />
+              </ProtectedRoute>
+            } />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AnimatePresence>

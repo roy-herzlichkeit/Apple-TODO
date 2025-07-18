@@ -1,11 +1,12 @@
 import express from 'express';
 import Task from '../models/Task.js';
+import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
     try {
-        const tasks = await Task.find({ userId: 'tester' }).sort({ createdAt: -1 });
+        const tasks = await Task.find({ userId: req.user._id }).sort({ createdAt: -1 });
         res.json({
             success: true,
             tasks: tasks
@@ -19,7 +20,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
     try {
         const { title, remTime, importance, urgency, priority, color } = req.body;
         
@@ -37,7 +38,7 @@ router.post('/', async (req, res) => {
             urgency,
             priority,
             color: color || '#2a2727',
-            userId: 'tester'
+            userId: req.user._id
         });
 
         const savedTask = await task.save();
@@ -54,7 +55,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:taskId', async (req, res) => {
+router.put('/:taskId', authenticateToken, async (req, res) => {
     try {
         const { taskId } = req.params;
         const updates = req.body;
@@ -64,7 +65,7 @@ router.put('/:taskId', async (req, res) => {
         }
 
         const task = await Task.findOneAndUpdate(
-            { _id: taskId, userId: 'tester' },
+            { _id: taskId, userId: req.user._id },
             updates,
             { new: true, runValidators: true }
         );
@@ -89,11 +90,11 @@ router.put('/:taskId', async (req, res) => {
     }
 });
 
-router.delete('/:taskId', async (req, res) => {
+router.delete('/:taskId', authenticateToken, async (req, res) => {
     try {
         const { taskId } = req.params;
         
-        const task = await Task.findOneAndDelete({ _id: taskId, userId: 'tester' });
+        const task = await Task.findOneAndDelete({ _id: taskId, userId: req.user._id });
 
         if (!task) {
             return res.status(404).json({
