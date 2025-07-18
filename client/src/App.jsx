@@ -71,8 +71,7 @@ const App = () => {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
-            <Route path="/tester" element={<User />} />
-            <Route path="/:username" element={<User />} />
+            <Route path="/user" element={<User />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AnimatePresence>

@@ -1,9 +1,8 @@
 import express from 'express';
-import { verifyFirebaseToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', verifyFirebaseToken, (req, res) => {
+router.get('/', (req, res) => {
     res.json({
         success: true,
         tasks: [],
@@ -11,21 +10,21 @@ router.get('/', verifyFirebaseToken, (req, res) => {
     });
 });
 
-router.post('/', verifyFirebaseToken, (req, res) => {
+router.post('/', (req, res) => {
     res.json({
         success: true,
         message: 'Create task endpoint - to be implemented'
     });
 });
 
-router.put('/:taskId', verifyFirebaseToken, (req, res) => {
+router.put('/:taskId', (req, res) => {
     res.json({
         success: true,
         message: 'Update task endpoint - to be implemented'
     });
 });
 
-router.delete('/:taskId', verifyFirebaseToken, (req, res) => {
+router.delete('/:taskId', (req, res) => {
     res.json({
         success: true,
         message: 'Delete task endpoint - to be implemented'

@@ -7,7 +7,7 @@ import taskRoutes from './routes/tasks.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
@@ -47,7 +47,5 @@ app.use((error, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📍 Health check: http://localhost:${PORT}/health`);
-    console.log(`🔗 API base: http://localhost:${PORT}/api`);
+    console.log(`Server running on port ${PORT}`);
 });

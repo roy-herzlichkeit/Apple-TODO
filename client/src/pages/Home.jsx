@@ -5,7 +5,6 @@ import { useSnapshot } from "valtio";
 import { store } from "../utils";
 import { useNavigate } from "react-router-dom";
 import { useTransition } from "../context/TransitionContext";
-import { useAuth } from "../hooks/useAuth";
 import PageTransition from "../components/ui/PageTransition";
 import DarkModeToggle from "../components/ui/DarkModeToggle";
 import Footer from "../components/layout/Footer";
@@ -14,7 +13,6 @@ const Home = () => {
     const snap = useSnapshot(store);
     const navigate = useNavigate();
     const { triggerTransition } = useTransition();
-    const { login, isAuthenticated, user } = useAuth();
 
     useGSAP(() => {
         gsap.fromTo(
@@ -24,36 +22,19 @@ const Home = () => {
         );
     });
 
-    const handleGoogleSignIn = async () => {
-        try {
-            const result = await login();
-            if (result.success) {
-                triggerTransition(() => {
-                    store.signedIn = true;
-                    const username = result.user.displayName?.toLowerCase().replace(/\s+/g, '') || 
-                                   result.user.email?.split('@')[0] || 
-                                   'user';
-                    navigate(`/${username}`);
-                });
-            } else {
-                console.error('Login failed:', result.error);
-                alert('Login failed. Please try again.');
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            alert('Login failed. Please try again.');
-        }
-    };
-
-    if (isAuthenticated && user) {
-        const username = user.displayName?.toLowerCase().replace(/\s+/g, '') || 
-                        user.email?.split('@')[0] || 
-                        'user';
+    const handleSignIn = () => {
         triggerTransition(() => {
             store.signedIn = true;
-            navigate(`/${username}`);
+            navigate('/user');
         });
-    }
+    };
+
+    const handleSignUp = () => {
+        triggerTransition(() => {
+            store.signedIn = true;
+            navigate('/user');
+        });
+    };
 
     return (
         <PageTransition>
@@ -62,41 +43,53 @@ const Home = () => {
                 <div className="flex-1">
                     <section id="hero" className="relative overflow-hidden font-i">
                         <div className="hero-layout">
-                        <header className="flex flex-col justify-center md:w-full w-screen md:px-20 px-5">
-                            <div className="flex flex-col gap-7 h-20 md:h-30 lg:h-40 mt-48 overflow-hidden">
-                                <div className="hero-text text-5xl md:text-8xl lg:text-9xl flex gap-4">
-                                    <h1>
-                                        <span className="wrapper slide">
-                                            {words.map((word) => (
-                                                <span key={word.id} className="flex items-center md:gap-3 gap-1 pb-2">
-                                                    <span className={`text-white-50` + (word.id === 1 || word.id === 7 || word.id === 11) ? `font-ii` : `font-i`}>
-                                                        {word.text}
+                            <header className="flex flex-col justify-center md:w-full w-screen md:px-20 px-5">
+                                <div className="flex flex-col gap-7 h-20 md:h-30 lg:h-40 mt-48 overflow-hidden">
+                                    <div className="hero-text text-5xl md:text-8xl lg:text-9xl flex gap-4">
+                                        <h1>
+                                            <span className="wrapper slide">
+                                                {words.map((word) => (
+                                                    <span key={word.id} className="flex items-center md:gap-3 gap-1 pb-2">
+                                                        <span className={`text-white-50` + (word.id === 1 || word.id === 7 || word.id === 11) ? `font-ii` : `font-i`}>
+                                                            {word.text}
+                                                        </span>
                                                     </span>
-                                                </span>
-                                            ))}
-                                        </span>
-                                    </h1>
+                                                ))}
+                                            </span>
+                                        </h1>
+                                        <h1>
+                                            Tasks
+                                        </h1>
+                                    </div>
+                                </div>
+                                <div id="advert" className="mt-10 text-3xl lg:text-4xl">
                                     <h1>
-                                        Tasks
+                                        A Task Manager (Todo App)
                                     </h1>
                                 </div>
-                            </div>
-                            <div id="advert" className="mt-10 text-3xl lg:text-4xl">
-                                <h1>
-                                    A Task Manager (Todo App)
-                                </h1>
-                            </div>
-                            <div className="flex flex-col gap-3 md:gap-5 mt-5 md:flex-row w-fit">
-                                <button className="flex gap-2 justify-around px-3 py-2" onClick={handleGoogleSignIn}>
-                                    <span className="text-[#2a2727]">
-                                        Sign in with Google
-                                    </span>
-                                    <img src="login.svg" alt="" />
-                                </button>
-                            </div>
-                        </header>
-                    </div>
-                </section>
+                                <div className="flex flex-col gap-3 md:gap-5 mt-5 md:flex-row w-fit">
+                                    <button
+                                        className="p-2 flex gap-2"
+                                        onClick={handleSignIn}
+                                    >
+                                        <span className="text-[#2a2727]">
+                                            Sign In
+                                        </span>
+                                        <img src="login.svg" alt="" />
+                                    </button>
+                                    <button
+                                        className="p-2 flex gap-2"
+                                        onClick={handleSignUp}
+                                    >
+                                        <span className="text-[#2a2727]">
+                                            Sign Up
+                                        </span>
+                                        <img src="signup.svg" alt="" />
+                                    </button>
+                                </div>
+                            </header>
+                        </div>
+                    </section>
                 </div>
                 <Footer />
             </div>

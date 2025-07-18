@@ -22,7 +22,6 @@ export const words = [
     {id: 10, text: "Мои"}
 ];
 
-// Memoized calculation function
 export const calculateRemaining = (remTime) => {
     const now = new Date();
     const [datePart, timePart] = remTime.split('T');
@@ -45,7 +44,6 @@ export const calculateRemaining = (remTime) => {
     return parts.join(' ') + ' left';
 };
 
-// Memoized date formatting function
 export const getLocalDateTime = (date = new Date()) => {
     const d = date;
     const pad = (n) => n.toString().padStart(2, '0');
@@ -57,7 +55,6 @@ export const getLocalDateTime = (date = new Date()) => {
     return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
-// Memoized priority calculation
 export const getPriority = (importance, urgency) => {
     if (importance > 2) {
         return urgency > 2 ? 1 : 3;
@@ -66,7 +63,6 @@ export const getPriority = (importance, urgency) => {
     }
 };
 
-// Debounce utility for performance
 export const debounce = (func, wait) => {
     let timeout;
     return function executedFunction(...args) {

@@ -2,7 +2,6 @@ import { StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { TransitionProvider } from './context/TransitionContext'
-import { AuthProvider } from './context/AuthContext'
 import { ErrorBoundary } from './components/ui'
 import './styles.css'
 import App from './App.jsx'
@@ -17,13 +16,11 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ErrorBoundary>
       <BrowserRouter>
-        <AuthProvider>
-          <TransitionProvider>
-            <Suspense fallback={<Loading />}>
-              <App />
-            </Suspense>
-          </TransitionProvider>
-        </AuthProvider>
+        <TransitionProvider>
+          <Suspense fallback={<Loading />}>
+            <App />
+          </Suspense>
+        </TransitionProvider>
       </BrowserRouter>
     </ErrorBoundary>
   </StrictMode>,

@@ -1,16 +1,15 @@
 import express from 'express';
-import { verifyFirebaseToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/me', verifyFirebaseToken, (req, res) => {
+router.get('/me', (req, res) => {
     res.json({
         success: true,
-        user: req.user
+        user: { id: 'user123', name: 'User', email: 'user@example.com' }
     });
 });
 
-router.put('/profile', verifyFirebaseToken, (req, res) => {
+router.put('/profile', (req, res) => {
     res.json({
         success: true,
         message: 'Profile update endpoint - to be implemented'

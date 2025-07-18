@@ -1,6 +1,5 @@
-import React, { useMemo, useCallback, useState } from "react";
+import { useMemo, useCallback, useState } from "react";
 import { useSnapshot } from "valtio";
-import { useUsername } from "../hooks/useAuth";
 import InputBox from "../components/tasks/InputBox";
 import PendingTasks from "../components/tasks/PendingTasks";
 import CompletedTasks from "../components/tasks/CompletedTasks";
@@ -11,7 +10,6 @@ import PageTransition from "../components/ui/PageTransition";
 
 const User = () => {
     const snap = useSnapshot(store, { sync: true });
-    const username = useUsername();
     
     const taskStats = useMemo(() => {
         const list = snap.list ?? [];
