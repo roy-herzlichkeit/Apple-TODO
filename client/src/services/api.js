@@ -43,6 +43,20 @@ class ApiService {
         });
     }
 
+    async verifyOtp(otpData) {
+        return this.request('/users/verify-otp', {
+            method: 'POST',
+            body: otpData,
+        });
+    }
+
+    async resendOtp(userData) {
+        return this.request('/users/resend-otp', {
+            method: 'POST',
+            body: userData,
+        });
+    }
+
     async login(credentials) {
         return this.request('/users/login', {
             method: 'POST',

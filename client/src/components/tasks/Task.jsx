@@ -28,6 +28,16 @@ const Task = memo(({ title, remTime, color, priority = 0, handleToggle, handleDe
   }, [expanded, isLong, title, maxChars]);
 
   const remaining = useMemo(() => calculateRemaining(remTime), [remTime]);
+  
+  const getPriorityName = useMemo(() => {
+    const priorityNames = {
+      1: 'Immediate',
+      2: 'Delegate', 
+      3: 'Schedule',
+      4: 'Deleteable'
+    };
+    return priorityNames[priority] || 'Unknown';
+  }, [priority]);
 
   const controlStyle = useMemo(() => ({
     backgroundColor: snap.dark ? 'var(--dark-color-2)' : 'var(--color-2)',
@@ -58,7 +68,7 @@ const Task = memo(({ title, remTime, color, priority = 0, handleToggle, handleDe
             )}
           </div>
           {priority !== 0 && <p className="text-sm">{remaining}</p>}
-          {priority !== 0 && <p className="text-sm">Priority Level {priority - 1}</p>}
+          {priority !== 0 && <p className="text-sm">{getPriorityName}</p>}
         </div>
       </div>
       <div className="flex space-x-2">

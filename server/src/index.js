@@ -2,10 +2,24 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import userRoutes from './routes/users.js';
 import taskRoutes from './routes/tasks.js';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const envPath = path.join(__dirname, '../.env');
+console.log('Looking for .env file at:', envPath);
+console.log('File exists:', fs.existsSync(envPath));
+
+dotenv.config({ path: envPath });
+
+console.log('Environment variables loaded:');
+console.log('EMAIL_USER:', process.env.EMAIL_USER);
+console.log('EMAIL_PASS defined:', !!process.env.EMAIL_PASS);
 
 const connectDB = async () => {
     try {

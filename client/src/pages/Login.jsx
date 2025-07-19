@@ -52,7 +52,15 @@ const Login = () => {
                 });
             }
         } catch (error) {
-            setErrors({ submit: error.message });
+            if (error.message.includes('verify your email') && error.userId) {
+                setErrors({ 
+                    submit: error.message,
+                    needsVerification: true,
+                    userId: error.userId
+                });
+            } else {
+                setErrors({ submit: error.message });
+            }
         } finally {
             setIsLoading(false);
         }
@@ -90,7 +98,25 @@ const Login = () => {
 
                             {errors.submit && (
                                 <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-                                    {errors.submit}
+                                    <p>{errors.submit}</p>
+                                    {errors.needsVerification && errors.userId && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                triggerTransition(() => {
+                                                    navigate('/signup', { 
+                                                        state: { 
+                                                            step: 'otp', 
+                                                            userId: errors.userId 
+                                                        } 
+                                                    });
+                                                });
+                                            }}
+                                            className="mt-2 text-sm underline"
+                                        >
+                                            Go to Email Verification
+                                        </button>
+                                    )}
                                 </div>
                             )}
 
