@@ -217,7 +217,6 @@ const Signup = () => {
                         <div className="w-full max-w-sm sm:max-w-md">
                             <form onSubmit={handleOtpSubmit} className="p-6 sm:p-10" style={controlStyle}>
                                 <div className="text-center mb-6">
-                                    <div className="text-4xl mb-4">📧</div>
                                     <h1 className="text-3xl sm:text-4xl mb-4">Verify Your Email</h1>
                                     <p className="text-sm sm:text-base mb-2">
                                         We've sent a 6-digit code to:
@@ -282,7 +281,7 @@ const Signup = () => {
                                         type="button"
                                         onClick={handleResendOtp}
                                         disabled={isLoading}
-                                        className="text-sm underline disabled:opacity-50"
+                                        className="text-sm text-[#2a2727] underline disabled:opacity-50"
                                         style={{ color: controlStyle.color }}
                                     >
                                         Resend Code
