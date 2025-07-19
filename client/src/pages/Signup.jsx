@@ -281,8 +281,7 @@ const Signup = () => {
                                         type="button"
                                         onClick={handleResendOtp}
                                         disabled={isLoading}
-                                        className="text-sm text-[#2a2727] underline disabled:opacity-50"
-                                        style={{ color: controlStyle.color }}
+                                        className="text-sm text-[#2a2727] underline disabled:opacity-50 bg-amber-50"
                                     >
                                         Resend Code
                                     </button>
