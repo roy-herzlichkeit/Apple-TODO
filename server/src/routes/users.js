@@ -1,5 +1,4 @@
 import express from 'express';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
 import User from '../models/User.js';
@@ -82,12 +81,10 @@ router.post('/register', authLimiter, async (req, res) => {
     }
 });
 
-// OTP Verification endpoint
 router.post('/verify-otp', authLimiter, async (req, res) => {
     try {
         let { userId, otp } = req.body;
         
-        // Sanitize inputs
         userId = userId?.toString().trim();
         otp = otp?.toString().trim();
 

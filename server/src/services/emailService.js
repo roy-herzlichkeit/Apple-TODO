@@ -96,7 +96,7 @@ class EmailService {
                         <p>Your email has been successfully verified! You can now start using AmarTasks to manage your tasks effectively.</p>
                         
                         <div style="text-align: center; margin: 30px 0;">
-                            <a href="${process.env.CLIENT_URL}/login" 
+                            <a href="https://amartasks.onrender.com/" 
                                style="background-color: #2a2727; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px;">
                                 Start Managing Tasks
                             </a>
