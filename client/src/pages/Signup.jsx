@@ -308,9 +308,12 @@ const Signup = () => {
                             });
                         }}
                     >
-                        <img src="logout.svg" alt="" />
+                        <img
+                            src="logout.svg"
+                            alt=""
+                        />
                     </button>
-                    <DarkModeToggle />
+                    <DarkModeToggle className='' />
                 </div>
                 <div className="flex-1 flex items-center justify-center font-i px-4">
                     <div className="w-full max-w-sm sm:max-w-md">
